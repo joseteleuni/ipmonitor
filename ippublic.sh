@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /home/lenovo/Descargas/ippublic/configuracion
+source /home/infopyme/ipmonitor/configuracion
 
 # Función para recuperar la dirección IP pública
 get_public_ip() {

@@ -3,7 +3,7 @@ Description=IP Monitor Service
 After=network.target
 
 [Service]
-ExecStart=/home/infopyme/ippublic/ippublic.sh
+ExecStart=/home/infopyme/ipmonitor/ippublic.sh
 Restart=always
 
 [Install]

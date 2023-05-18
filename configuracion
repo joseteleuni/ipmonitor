@@ -1,4 +1,4 @@
-IP_FILE="/home/lenovo/Descargas/ippublic/previous_ip.txt"
+IP_FILE="/home/infopyme/ipmonitor/previous_ip.txt"
 user=inkacel
 token=8b35dd7cf58c11ed97c40bb2af236a60
 hostname=penal002.dyndns.org
