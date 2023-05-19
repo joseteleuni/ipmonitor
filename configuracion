@@ -1,4 +1,5 @@
-IP_FILE="/home/infopyme/ipmonitor/previous_ip.txt"
+ip_publica=179.6.91.30
+ip_vpn=138.84.39.146
 user=inkacel
 token=8b35dd7cf58c11ed97c40bb2af236a60
-hostname=penal002.dyndns.org
+hostname=penal003.dyndns.org
