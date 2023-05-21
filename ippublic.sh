@@ -1,9 +1,8 @@
 #!/bin/bash
 
-#source /home/infopyme/ipmonitor/configuracion
-source ./configuracion
+source /home/infopyme/ipmonitor/configuracion
 
-# Función para recuperar la dirección IP pública
+# Función para recuperar la dirección IP pública del dominio
 get_public_ip() {
     curl -sS https://api.ipify.org
 }
@@ -14,10 +13,10 @@ read_dyndns(){
    dig +short $hostname
 }
 
-#Funcion que lee el valor del DNS 
+#Funcion que lee el valor actual de la IP publica
 read_actual(){
 
-    ip=$(curl ifconfig.me)
+    ip=$1
 
     if [ "$ip" != "$ip_publica" ]; then
         ip=$ip_vpn
@@ -26,7 +25,7 @@ read_actual(){
     echo $ip
 }
 
-# Función para escribir la dirección IP actual en un archivo
+# Función para escribir la dirección IP publica en DynDNS
 write_current_ip() {
     curl -u $user:$token "https://members.dyndns.org/v3/update?hostname=$hostname&myip=$1"
 }
@@ -36,16 +35,11 @@ while true; do
     
 
     # Recuperar la dirección IP actual
-    current_ip=$(get_public_ip)
-    
+    current_ip=$(get_public_ip)    
     ip_dyndns=$(read_dyndns)
-    ip_actual=$(read_actual)
+    ip_actual=$(read_actual "$current_ip")
 
     if [ -n "$current_ip" ]; then
-        
-        echo $current_ip
-        echo $ip_dyndns
-        echo $ip_actual
 
         if [ "$ip_dyndns" != "$ip_actual" ]; then
 
