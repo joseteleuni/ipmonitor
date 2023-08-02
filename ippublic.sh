@@ -10,7 +10,7 @@ get_public_ip() {
 #Funcion que lee el valor del DNS 
 read_dyndns(){
 
-   dig +short $hostname
+   dig +short $1
 }
 
 #Funcion que lee el valor actual de la IP publica
@@ -27,25 +27,36 @@ read_actual(){
 
 # Función para escribir la dirección IP publica en DynDNS
 write_current_ip() {
-    curl -u $user:$token "https://members.dyndns.org/v3/update?hostname=$hostname&myip=$1"
+    curl -u $user:$token "https://members.dyndns.org/v3/update?hostname=$1&myip=$2"
 }
 
 
 while true; do
     
-
     # Recuperar la dirección IP actual
     current_ip=$(get_public_ip)    
-    ip_dyndns=$(read_dyndns)
-    ip_actual=$(read_actual "$current_ip")
 
     if [ -n "$current_ip" ]; then
+        
+        ip_dyndns1=$(read_dyndns "$hostname1")
+        ip_dyndns2=$(read_dyndns "$hostname2")
+        
+      
+        if  [ -n "$hostname2" ] && [ "$ip_dyndns2" != "$current_ip" ]; then
+ 
+            echo "La dirección IP REAL ha cambiado!">>/var/log/ipservices.log
+            echo "Dirección IP REAL anterior: $ip_dyndns y la Dirección IP actual: $current_ip">>/var/log/ipservices.log
+            write_current_ip "$hostname2" "$current_ip"
+            
+        fi
 
-        if [ "$ip_dyndns" != "$ip_actual" ]; then
-
-            echo "La dirección IP ha cambiado!">>/var/log/ipservices.log
-            echo "Dirección IP anterior: $ip_dyndns y la Dirección IP actual: $ip_actual">>/var/log/ipservices.log
-            write_current_ip "$ip_actual"
+        if [ -n "$hostname1" ] && [ "$ip_dyndns1" != "$ip_actual" ]; then
+          
+            ip_actual=$(read_actual "$current_ip")
+            
+            echo "La dirección IP VPN ha cambiado!">>/var/log/ipservices.log
+            echo "Dirección IP VPN anterior: $ip_dyndns y la Dirección IP actual: $ip_actual">>/var/log/ipservices.log
+            write_current_ip "$hostname1" "$ip_actual"
             
         fi
     else
