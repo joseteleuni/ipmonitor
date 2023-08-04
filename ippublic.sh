@@ -40,7 +40,7 @@ while true; do
         
         ip_dyndns1=$(read_dyndns "$hostname1")
         ip_dyndns2=$(read_dyndns "$hostname2")
-        
+        ip_actual=$(read_actual "$current_ip")
       
         if  [ -n "$hostname2" ] && [ "$ip_dyndns2" != "$current_ip" ]; then
  
@@ -51,8 +51,6 @@ while true; do
         fi
 
         if [ -n "$hostname1" ] && [ "$ip_dyndns1" != "$ip_actual" ]; then
-          
-            ip_actual=$(read_actual "$current_ip")
             
             echo "La dirección IP VPN ha cambiado!">>/var/log/ipservices.log
             echo "Dirección IP VPN anterior: $ip_dyndns y la Dirección IP actual: $ip_actual">>/var/log/ipservices.log
